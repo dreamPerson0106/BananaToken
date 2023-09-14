@@ -17,5 +17,8 @@
   "devDependencies": {
     "@nomiclabs/hardhat-etherscan": "^3.0.1",
     "hardhat": "^2.8.4"
+  },
+  "scripts": {
+    "test": "npx hardhat test ./test/test.js"
   }
 }
