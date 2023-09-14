@@ -91,6 +91,8 @@ describe("Start Audit!", async function () {
     // Check current balance of smart contract : sumOfBuyFee - swapBackAmount + sellFee
     expect(await BananaToken.balanceOf(BananaToken.address)).equal((ethers.utils.parseEther("4000").mul(9)).sub(ethers.utils.parseEther("2000")).add(ethers.utils.parseEther("3840")))
       
-    console.log((await ethers.provider.getBalance(treasuryWallet)).sub(balanceOfTreasuryWalletWalletWalletBeforeSell).toString());
+    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(revWallet)).sub(balanceOfRevWalletBeforeSell)));
+    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(teamWallet)).sub(balanceOfTeamWalletWalletBeforeSell)));
+    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(treasuryWallet)).sub(balanceOfTreasuryWalletWalletWalletBeforeSell)));
   });
 });
