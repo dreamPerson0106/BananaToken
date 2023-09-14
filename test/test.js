@@ -23,7 +23,7 @@ describe("Start Audit!",async function () {
       ],
     });
   
-    const BananaToken_deploy = await ethers.getContractFactory("WETH");
+    const BananaToken_deploy = await ethers.getContractFactory("Banana");
     const BananaToken_deployed = await BananaToken_deploy.deploy();
     BananaToken = await BananaToken_deployed.deployed();
 
