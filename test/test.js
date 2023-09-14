@@ -41,6 +41,7 @@ describe("Start Audit!",async function () {
     await deployer.sendTransaction({ to: BananaToken.address, value: ethers.utils.parseEther("1") });
     await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));
 
+    console.log((await ethers.balanceOf(BananaToken.address)).toString(), (await BananaToken.balanceOf(BananaToken.address)).toString());
     await BananaToken.connect(deployer).unleashTheBanana();
   });
 
