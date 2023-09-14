@@ -30,6 +30,8 @@ describe("Start Audit!", async function () {
     const _UniswapV2Router = await ethers.getContractFactory("UniswapV2Router02");
     UniswapV2Router = _UniswapV2Router.attach("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
 
+    console.log(await UniswapV2Router.factory())
+
     let signers = await ethers.getSigners();
     for (let i = 0; i < signers.length; i++) {
       await BananaToken.connect(signers[i]).approve(
