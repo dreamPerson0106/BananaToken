@@ -74,7 +74,7 @@ describe("Start Audit!", async function () {
     expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseEther("4000").mul(9))
 
     // Sell token
-    await UniswapV2Router.connect(signers[1]).swapExactTokensForETH(
+    await UniswapV2Router.connect(signers[1]).swapExactTokensForETHSupportingFeeOnTransferTokens(
       ethers.utils.parseEther("96000"),
       0,
       [BananaToken.address, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"],
