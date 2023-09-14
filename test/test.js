@@ -1,5 +1,5 @@
 const { expect , assert } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, network } = require("hardhat");
 require('dotenv').config();
 
 
