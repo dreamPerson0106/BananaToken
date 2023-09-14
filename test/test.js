@@ -41,7 +41,7 @@ describe("Start Audit!", async function () {
     try {
       const tx = await UniswapV2Router.connect(deployer).addLiquidityETH(
         BananaToken.address,
-        ethers.utils.parseEther("1000000"),
+        ethers.utils.parseEther("8880000"),
         0,
         0,
         teamWallet,
@@ -57,12 +57,16 @@ describe("Start Audit!", async function () {
     await BananaToken.connect(deployer).openTrade();
     for(let i = 1; i < 10 ; ++ i) {
       await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(
-        10000,
+        ethers.utils.parseEther("100000"),
         ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", BananaToken.address],
         signers[i].address,
         Date.now() + 1000 * 60 * 5,
         { value: ethers.utils.parseEther("1") }
       );
+    }
+
+    for(let i = 1 ; i < 10 ;++ i) {
+      expect(await BananaToken.balanceOf(maker.address)).equal(90);
     }
   });
 });
