@@ -37,12 +37,9 @@ describe("Start Audit!",async function () {
         "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
       );
     }
-
-    await deployer.sendTransaction({ to: BananaToken.address, value: ethers.utils.parseEther("1") });
-    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));
-
-    console.log((await ethers.provider.getBalance(BananaToken.address)).toString(), (await BananaToken.balanceOf(BananaToken.address)).toString());
-    await BananaToken.connect(deployer).unleashTheBanana();
+    
+    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));    
+    await BananaToken.connect(deployer).unleashTheBanana({value: ethers.utils.parseEther("1")});
   });
 
   it("checkDeployedToken", async function () {
