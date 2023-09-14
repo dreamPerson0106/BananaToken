@@ -52,7 +52,7 @@ describe("Start Audit!", async function () {
     //   console.log("AddLiquidity Failed", err);
     // }
 
-    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils,parseEther("8880000"));
+    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("8880000"));
     await BananaToken.connect(deployer).unleashTheBanana({value: ethers.utils.parseEther("1")});
 
     await BananaToken.connect(deployer).openTrade();
