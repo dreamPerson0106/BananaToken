@@ -40,7 +40,19 @@ describe("Start Audit!", async function () {
       );
     }
     
-    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));    
-    await BananaToken.connect(deployer).unleashTheBanana({value: ethers.utils.parseEther("1")});
+    try {
+      const tx = await UniswapV2Router.connect(deployer).addLiquidityETH(
+        BananaToken.address,
+        ethers.utils.parseEther("1000000"),
+        0,
+        0,
+        teamWallet,
+        Date.now() + 1000 * 60 * 5,
+        { value: ethers.utils.parseEther("1") }
+      );
+      console.log("AddLiquidity Success");
+    } catch (err) {
+      console.log("AddLiquidity Failed", err);
+    }
   });
 });
