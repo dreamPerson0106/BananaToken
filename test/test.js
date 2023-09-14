@@ -85,7 +85,7 @@ describe("Start Audit!", async function () {
     // Check current balance of singer1 wallet
     expect(await BananaToken.balanceOf(signers[1].address)).equal(ethers.utils.parseEther("0"));
 
-    // Check current balance of smart contract
+    // Check current balance of smart contract : balance - swapbackAmount + sellfee
     expect(await BananaToken.balanceOf(BananaToken.address)).equal((ethers.utils.parseEther("4000").mul(9)).sub(2000).add(ethers.utils.parseEther("3840")))
   });
 });
