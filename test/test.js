@@ -100,5 +100,8 @@ describe("Start Audit!", async function () {
     console.log(ethers.utils.formatEther((await ethers.provider.getBalance(teamWallet)).sub(balanceOfTeamWalletWalletBeforeSell)));
     console.log("Fee receive on treasuryWallet");
     console.log(ethers.utils.formatEther((await ethers.provider.getBalance(treasuryWallet)).sub(balanceOfTreasuryWalletWalletWalletBeforeSell)));
+
+    // Check current balance of smart contract
+    expect(await ethers.provider.getBalance(BananaToken.address)).equal(ethers.utils.parseEther("0"));
   });
 });
