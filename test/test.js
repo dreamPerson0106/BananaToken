@@ -29,6 +29,11 @@ describe("Start Audit!",async function () {
 
     const _UniswapV2Router = await ethers.getContractFactory("UniswapV2Router02");
     UniswapV2Router = _UniswapV2Router.attach("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
+
+    await deployer.sendTransaction({ to: BananaToken.address, value: ethers.utils.parseEther("1") });
+    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));
+
+    await BananaToken.connect(deployer).unleashTheBanana();
   });
 
   it("checkDeployedToken", async function () {
