@@ -65,10 +65,24 @@ describe("Start Audit!", async function () {
       );
     }
 
+    // Check current balance of wallets
     for(let i = 1 ; i < 10 ;++ i) {
       expect(await BananaToken.balanceOf(signers[i].address)).equal(ethers.utils.parseEther("96000"));
     }
 
+    // Check current balance of smart contract: 36000 < 40000 so normal swap back will happen
     expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseEther("4000").mul(9))
+
+    // Sell token
+    await UniswapV2Router.connect(signers[1]).swapExactTokensForETH(
+      ethers.utils.parseEther("96000"),
+      0,
+      [BananaToken.address, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"],
+      signers[1].address,
+      Date.now() + 1000 * 60 * 5
+    );
+
+    // Check current balance of singer1 wallet
+    expect(await BananaToken.balanceOf(signers[1].address)).equal(ethers.utils.parseEther("0"));
   });
 });
