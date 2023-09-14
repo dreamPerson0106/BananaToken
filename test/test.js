@@ -30,8 +30,6 @@ describe("Start Audit!", async function () {
     const _UniswapV2Router = await ethers.getContractFactory("UniswapV2Router02");
     UniswapV2Router = _UniswapV2Router.attach("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
 
-    console.log(await UniswapV2Router.factory())
-
     let signers = await ethers.getSigners();
     for (let i = 0; i < signers.length; i++) {
       await BananaToken.connect(signers[i]).approve(
@@ -57,7 +55,7 @@ describe("Start Audit!", async function () {
 
     for(let i = 1; i < 10 ; ++ i) {
       await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(
-        ethers.utils.parseEther("100000"),
+        10000,
         ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", BananaToken.address],
         signers[i].address,
         Date.now() + 1000 * 60 * 5,
