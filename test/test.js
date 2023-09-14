@@ -17,7 +17,6 @@ describe("Start Audit!", async function () {
         {
           forking: {
             jsonRpcUrl: process.env.RPC_URL,
-            blockNumber: 18135204,
           },
         },
       ],
