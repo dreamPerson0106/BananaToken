@@ -9,7 +9,7 @@ describe("Start Audit!",async function () {
   let treasuryWallet = "0x7d35f092baD40CBAEEC9Ea518C2DAa3335076E8f";
   let teamWallet = "0x37aAb97476bA8dC785476611006fD5dDA4eed66B";
   
-  beforeEach(async function () {
+  it("checkDeployedToken", async function () {
     [deployer, addr1, addr2, addr3, addr4] = await ethers.getSigners();
     await network.provider.request({
       method: "hardhat_reset",
@@ -40,8 +40,5 @@ describe("Start Audit!",async function () {
     
     await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));    
     await BananaToken.connect(deployer).unleashTheBanana({value: ethers.utils.parseEther("1")});
-  });
-
-  it("checkDeployedToken", async function () {
   });
 });
