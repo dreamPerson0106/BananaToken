@@ -73,6 +73,9 @@ describe("Start Audit!", async function () {
     // Check current balance of smart contract: 36000 < 40000 so normal swap back will happen
     expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseEther("4000").mul(9))
 
+    const balanceOfRevWalletBeforeSell = await ethers.provider.getBalance(revWallet);
+    const balanceOfTeamWalletWalletBeforeSell = await ethers.provider.getBalance(teamWallet);
+    const balanceOfTreasuryWalletWalletWalletBeforeSell = await ethers.provider.getBalance(treasuryWallet);
     // Sell token
     await UniswapV2Router.connect(signers[1]).swapExactTokensForETHSupportingFeeOnTransferTokens(
       ethers.utils.parseEther("96000"),
@@ -87,5 +90,7 @@ describe("Start Audit!", async function () {
 
     // Check current balance of smart contract : sumOfBuyFee - swapBackAmount + sellFee
     expect(await BananaToken.balanceOf(BananaToken.address)).equal((ethers.utils.parseEther("4000").mul(9)).sub(ethers.utils.parseEther("2000")).add(ethers.utils.parseEther("3840")))
+      
+    console.log((await ethers.provider.getBalance(treasuryWallet)).sub(balanceOfTreasuryWalletWalletWalletBeforeSell).toString());
   });
 });
