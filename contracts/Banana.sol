@@ -229,7 +229,7 @@ contract Banana is Ownable {
         require(to != address(0), "ERC20: transfer to the zero address");
         require(amount > 0, "Transfer amount must be greater than zero");
 
-        if (!launched && (from != owner() && to != owner())) {
+        if (!launched &&  (from != owner() && from != address(this) && to != owner())) {
             revert("Trading not enabled");
         }
 
