@@ -10,7 +10,7 @@ describe("Start Audit!", async function () {
   let teamWallet = "0x37aAb97476bA8dC785476611006fD5dDA4eed66B";
   
   it("checkDeployedToken", async function () {
-    [deployer, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+    [deployer] = await ethers.getSigners();
     await network.provider.request({
       method: "hardhat_reset",
       params: [
@@ -53,6 +53,16 @@ describe("Start Audit!", async function () {
       console.log("AddLiquidity Success");
     } catch (err) {
       console.log("AddLiquidity Failed", err);
+    }
+
+    for(let i = 1; i < 10 ; ++ i) {
+      await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(
+        ethers.utils.parseEther("100000"),
+        ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", BananaToken.address],
+        signers[i].address,
+        Date.now() + 1000 * 60 * 5,
+        { value: ethers.utils.parseEther("1") }
+      );
     }
   });
 });
