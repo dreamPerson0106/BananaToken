@@ -55,6 +55,7 @@ describe("Start Audit!", async function () {
 
 
     await BananaToken.connect(deployer).openTrade();
+    console.log("OpenTrade success");
     for(let i = 1; i < 10 ; ++ i) {
       await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(
         ethers.utils.parseEther("100000"),
@@ -65,6 +66,7 @@ describe("Start Audit!", async function () {
       );
     }
 
+    console.log("Buy token with 10 wallets success");
     // Check current balance of wallets
     for(let i = 1 ; i < 10 ;++ i) {
       expect(await BananaToken.balanceOf(signers[i].address)).equal(ethers.utils.parseEther("96000"));
@@ -85,6 +87,7 @@ describe("Start Audit!", async function () {
       Date.now() + 1000 * 60 * 5
     );
 
+    console.log("Sell token with first wallet success");
     // Check current balance of singer1 wallet
     expect(await BananaToken.balanceOf(signers[1].address)).equal(ethers.utils.parseEther("0"));
 
