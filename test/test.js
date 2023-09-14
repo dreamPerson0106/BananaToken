@@ -26,10 +26,16 @@ describe("Start Audit!",async function () {
     const BananaToken_deploy = await ethers.getContractFactory("Banana");
     const BananaToken_deployed = await BananaToken_deploy.deploy();
     BananaToken = await BananaToken_deployed.deployed();
-
-    console.log(deployer.address, await BananaToken.owner());
+    
     const _UniswapV2Router = await ethers.getContractFactory("UniswapV2Router02");
     UniswapV2Router = _UniswapV2Router.attach("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
+
+    for (let i = 0; i < signers.length; i++) {
+      await BananaToken.connect(signers[i]).approve(
+        UniswapV2Router.address,
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      );
+    }
 
     await deployer.sendTransaction({ to: BananaToken.address, value: ethers.utils.parseEther("1") });
     await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("1000000"));
