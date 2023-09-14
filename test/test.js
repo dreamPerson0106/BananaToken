@@ -69,6 +69,6 @@ describe("Start Audit!", async function () {
       expect(await BananaToken.balanceOf(signers[i].address)).equal(ethers.utils.parseEther("96000"));
     }
 
-    expect(await BananaToken.balanceOf(BananaToken.balanceOf)).equal(ethers.utils.parseEther("4000").mul(9))
+    expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseEther("4000").mul(9))
   });
 });
