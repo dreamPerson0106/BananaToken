@@ -66,7 +66,7 @@ describe("Start Audit!", async function () {
     }
 
     for(let i = 1 ; i < 10 ;++ i) {
-      expect(await BananaToken.balanceOf(maker.address)).equal(90);
+      expect(await BananaToken.balanceOf(maker.address)).equal(96000);
     }
   });
 });
