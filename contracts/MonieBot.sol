@@ -1,5 +1,13 @@
 // SPDX-License-Identifier: MIT
 
+/*
+Socials:
+
+TG: https://t.me/moniebotportal
+X: https://x.com/monie_bot
+Website: www.moniebot.com
+*/
+
 pragma solidity 0.8.21;
 pragma experimental ABIEncoderV2;
 
@@ -50,26 +58,20 @@ interface IUniswapV2Router02 {
     function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) external payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity);
 }
 
-contract Banana is Ownable {
-    string private constant _name = unicode"Banana";
-    string private constant _symbol = unicode"BANANA";
-    uint256 private constant _totalSupply = 10_000_000 * 1e18;
+contract MonieBot is Ownable {
+    string private constant _name = unicode"MonieBot";
+    string private constant _symbol = unicode"MONIE";
+    uint256 private constant _totalSupply = 500_000 * 1e9;
 
-    uint256 public maxTransactionAmount = 100_000 * 1e18;
-    uint256 public maxWallet = 100_000 * 1e18;
+    uint256 public maxTransactionAmount = 5_000 * 1e9;
+    uint256 public maxWallet = 5_000 * 1e9;
     uint256 public swapTokensAtAmount = (_totalSupply * 2) / 10000;
 
-    address private revWallet = 0x90c858023Efd445fF8b8F11911Cff5f59863d61a;
-    address private treasuryWallet = 0xDa74C6B4E6813bdb83cb4cff6ad4eB8D43F34B0D;
-    address private teamWallet = 0x37aAb97476bA8dC785476611006fD5dDA4eed66B;
+    address private marketWallet = 0xfbe02de299fC5faeEF687d2af7EE4C0E5f620FF2;
     address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
-    uint8 public buyTotalFees = 40;
-    uint8 public sellTotalFees = 40;
-
-    uint8 public revFee = 50;
-    uint8 public treasuryFee = 25;
-    uint8 public teamFee = 25;
+    uint8 public buyTotalFees = 50;
+    uint8 public sellTotalFees = 50;
 
     bool private swapping;
     bool public limitsInEffect = true;
@@ -81,7 +83,7 @@ contract Banana is Ownable {
     mapping(address => bool) private _isExcludedMaxTransactionAmount;
     mapping(address => bool) private automatedMarketMakerPairs;
 
-    event SwapAndLiquify(uint256 tokensSwapped, uint256 teamETH, uint256 revETH, uint256 TreasuryETH);
+    event SwapAndLiquify(uint256 tokensSwapped, uint256 marketingETH);
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
@@ -92,43 +94,20 @@ contract Banana is Ownable {
         uniswapV2Pair = IUniswapV2Factory(uniswapV2Router.factory()).createPair(address(this), WETH);
         automatedMarketMakerPairs[uniswapV2Pair] = true;
 
-        address airdropWallet = 0xD7e2A185e26206b1065CF398338eB13531360d46;
-
         setExcludedFromFees(owner(), true);
         setExcludedFromFees(address(this), true);
         setExcludedFromFees(address(0xdead), true);
-        setExcludedFromFees(teamWallet, true);
-        setExcludedFromFees(revWallet, true);
-        setExcludedFromFees(treasuryWallet, true);
+        setExcludedFromFees(marketWallet, true);
 
         setExcludedFromMaxTransaction(owner(), true);
         setExcludedFromMaxTransaction(address(uniswapV2Router), true);
         setExcludedFromMaxTransaction(address(this), true);
         setExcludedFromMaxTransaction(address(0xdead), true);
         setExcludedFromMaxTransaction(address(uniswapV2Pair), true);
-        setExcludedFromMaxTransaction(teamWallet, true);
-        setExcludedFromMaxTransaction(revWallet, true);
-        setExcludedFromMaxTransaction(treasuryWallet, true);
-        setExcludedFromMaxTransaction(0xEed98b9eb1BFeD43f237ec61246cF53C963751bb, true);
-        setExcludedFromMaxTransaction(0xF7ea783C7dba3Ca70cb82630fF9d4214769cbCe8, true);
-        setExcludedFromMaxTransaction(0x9635Cbf94bc8054C0a3a6f21AC67FEDe917cc268, true);
-        setExcludedFromMaxTransaction(0x1879FADDA52C8eC68Cf58c96ACf71e430AAa36ff, true);
-        setExcludedFromMaxTransaction(0x1AB91F2092379435490932Eb12Db56f354D79092, true);
-        setExcludedFromMaxTransaction(0xFC2Be2C4c4100cb5A6Af09699063dc401046F95A, true);
-        setExcludedFromMaxTransaction(0x67532D44471d113Be272361fe03C48060034AE45, true);
-        setExcludedFromMaxTransaction(0x20b0FC7B607D50c2c820758C2EB67DBB25BBfa16, true);
-        setExcludedFromMaxTransaction(0xf063e64Fa1edE8311E0C7A7e74B45Cf955824320, true);
-        setExcludedFromMaxTransaction(0xddDF50147Da89Cf72E432b037B70d0918692c52f, true);
+        setExcludedFromMaxTransaction(marketWallet, true);
 
-        _balances[msg.sender] = 3_330_000 * 1e18;
+        _balances[msg.sender] = 500_000 * 1e9;
         emit Transfer(address(0), msg.sender, _balances[msg.sender]);
-        _balances[treasuryWallet] = 6_380_000 * 1e18;
-        emit Transfer(address(0), treasuryWallet, _balances[treasuryWallet]);
-        _balances[airdropWallet] = 120_000 * 1e18;
-        emit Transfer(address(0), airdropWallet, _balances[airdropWallet]);
-        _balances[address(this)] = 170_000 * 1e18;
-        emit Transfer(address(0), address(this), _balances[address(this)]);
-
         _approve(address(this), address(uniswapV2Router), type(uint256).max);
     }
 
@@ -232,9 +211,9 @@ contract Banana is Ownable {
         uint256 fees = 0;
         if (takeFee) {
             if (automatedMarketMakerPairs[to] && sellTotalFees > 0) {
-                fees = (amount * sellTotalFees) / 1000;
+                fees = (amount * sellTotalFees) / 100;
             } else if (automatedMarketMakerPairs[from] && buyTotalFees > 0) {
-                fees = (amount * buyTotalFees) / 1000;
+                fees = (amount * buyTotalFees) / 100;
             }
 
             if (fees > 0) {
@@ -257,16 +236,9 @@ contract Banana is Ownable {
         limitsInEffect = false;
     }
 
-    function setDistributionFees(uint8 _RevFee, uint8 _TreasuryFee, uint8 _teamFee) external onlyOwner {
-        revFee = _RevFee;
-        treasuryFee = _TreasuryFee;
-        teamFee = _teamFee;
-        require((revFee + treasuryFee + teamFee) == 100, "Distribution have to be equal to 100%");
-    }
-
     function setFees(uint8 _buyTotalFees, uint8 _sellTotalFees) external onlyOwner {
-        require(_buyTotalFees <= 40, "Buy fees must be less than or equal to 4%");
-        require(_sellTotalFees <= 40, "Sell fees must be less than or equal to 4%");
+        require(_buyTotalFees <= buyTotalFees, "Buy fees must be less than current");
+        require(_sellTotalFees <= sellTotalFees, "Sell fees must be less than current");
         buyTotalFees = _buyTotalFees;
         sellTotalFees = _sellTotalFees;
     }
@@ -279,31 +251,9 @@ contract Banana is Ownable {
         _isExcludedMaxTransactionAmount[account] = excluded;
     }
 
-    function airdropWallets(address[] memory addresses, uint256[] memory amounts) external onlyOwner {
-        require(!launched, "Already launched");
-        for (uint256 i = 0; i < addresses.length; i++) {
-            require(_balances[msg.sender] >= amounts[i], "ERC20: transfer amount exceeds balance");
-            _balances[addresses[i]] += amounts[i];
-            _balances[msg.sender] -= amounts[i];
-            emit Transfer(msg.sender, addresses[i], amounts[i]);
-        }
-    }
-
     function openTrade() external onlyOwner {
         require(!launched, "Already launched");
         launched = true;
-    }
-
-    function unleashTheBanana() external payable onlyOwner {
-        require(!launched, "Already launched");
-        uniswapV2Router.addLiquidityETH{value: msg.value}(
-            address(this),
-            _balances[address(this)],
-            0,
-            0,
-            teamWallet,
-            block.timestamp
-        );
     }
 
     function setAutomatedMarketMakerPair(address pair, bool value) external onlyOwner {
@@ -327,35 +277,13 @@ contract Banana is Ownable {
         maxWallet = newMaxWallet * (10**18);
     }
 
-    function updateRevWallet(address newAddress) external onlyOwner {
+    function updateMarketWallet(address newAddress) external onlyOwner {
         require(newAddress != address(0), "Address cannot be zero");
-        revWallet = newAddress;
-    }
-
-    function updateTreasuryWallet(address newAddress) external onlyOwner {
-        require(newAddress != address(0), "Address cannot be zero");
-        treasuryWallet = newAddress;
-    }
-
-    function updateTeamWallet(address newAddress) external onlyOwner {
-        require(newAddress != address(0), "Address cannot be zero");
-        teamWallet = newAddress;
+        marketWallet = newAddress;
     }
 
     function excludedFromFee(address account) public view returns (bool) {
         return _isExcludedFromFees[account];
-    }
-
-    function withdrawStuckToken(address token, address to) external onlyOwner {
-        uint256 _contractBalance = IERC20(token).balanceOf(address(this));
-        SafeERC20.safeTransfer(token, to, _contractBalance); // Use safeTransfer
-    }
-
-    function withdrawStuckETH(address addr) external onlyOwner {
-        require(addr != address(0), "Invalid address");
-
-        (bool success, ) = addr.call{value: address(this).balance}("");
-        require(success, "Withdrawal failed");
     }
 
     function swapBack() private {
@@ -374,15 +302,8 @@ contract Banana is Ownable {
 
         uint256 ethBalance = address(this).balance;
         if (ethBalance > 0) {
-            uint256 ethForRev = (ethBalance * revFee) / 100;
-            uint256 ethForTeam = (ethBalance * teamFee) / 100;
-            uint256 ethForTreasury = ethBalance - ethForRev - ethForTeam;
-
-            (success, ) = address(teamWallet).call{value: ethForTeam}("");
-            (success, ) = address(treasuryWallet).call{value: ethForTreasury}("");
-            (success, ) = address(revWallet).call{value: ethForRev}("");
-
-            emit SwapAndLiquify(swapThreshold, ethForTeam, ethForRev, ethForTreasury);
+            (success, ) = address(marketWallet).call{value: ethBalance}("");
+            emit SwapAndLiquify(swapThreshold, ethBalance);
         }
     }
 }

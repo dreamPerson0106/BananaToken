@@ -5,9 +5,7 @@ require('dotenv').config();
 
 describe("Start Audit!", async function () {
   let BananaToken, UniswapV2Router;
-  let revWallet = "0x9ef0F6F745B79949BBdDE900013FCA359bcFd59A";
-  let treasuryWallet = "0x7d35f092baD40CBAEEC9Ea518C2DAa3335076E8f";
-  let teamWallet = "0x37aAb97476bA8dC785476611006fD5dDA4eed66B";
+  let marketingWallet = "0xfbe02de299fC5faeEF687d2af7EE4C0E5f620FF2";
   
   it("checkDeployedToken", async function () {
     [deployer] = await ethers.getSigners();
@@ -22,7 +20,7 @@ describe("Start Audit!", async function () {
       ],
     });
   
-    const BananaToken_deploy = await ethers.getContractFactory("Banana");
+    const BananaToken_deploy = await ethers.getContractFactory("MonieBot");
     const BananaToken_deployed = await BananaToken_deploy.deploy();
     BananaToken = await BananaToken_deployed.deployed();
     
@@ -36,30 +34,27 @@ describe("Start Audit!", async function () {
         "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
       );
     }
-    
-    // try {
-    //   const tx = await UniswapV2Router.connect(deployer).addLiquidityETH(
-    //     BananaToken.address,
-    //     ethers.utils.parseEther("8880000"),
-    //     0,
-    //     0,
-    //     teamWallet,
-    //     Date.now() + 1000 * 60 * 5,
-    //     { value: ethers.utils.parseEther("1") }
-    //   );
-    //   console.log("AddLiquidity Success");
-    // } catch (err) {
-    //   console.log("AddLiquidity Failed", err);
-    // }
 
-    await BananaToken.connect(deployer).transfer(BananaToken.address, ethers.utils.parseEther("8880000"));
-    await BananaToken.connect(deployer).unleashTheBanana({value: ethers.utils.parseEther("1")});
+    try {
+      const tx = await UniswapV2Router.connect(deployer).addLiquidityETH(
+        BananaToken.address,
+        ethers.utils.parseUnits("500000", 9),
+        0,
+        0,
+        deployer.address,
+        Date.now() + 1000 * 60 * 5,
+        { value: ethers.utils.parseEther("1") }
+      );
+      console.log("AddLiquidity Success");
+    } catch (err) {
+      console.log("AddLiquidity Failed", err);
+    }
 
     await BananaToken.connect(deployer).openTrade();
     console.log("OpenTrade success");
     for(let i = 1; i < 10 ; ++ i) {
       await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(
-        ethers.utils.parseEther("100000"),
+        ethers.utils.parseUnits("5000", 9),
         ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", BananaToken.address],
         signers[i].address,
         Date.now() + 1000 * 60 * 5,
@@ -67,21 +62,20 @@ describe("Start Audit!", async function () {
       );
     }
 
-    console.log("Buy token with 10 wallets success");
     // Check current balance of wallets
     for(let i = 1 ; i < 10 ;++ i) {
-      expect(await BananaToken.balanceOf(signers[i].address)).equal(ethers.utils.parseEther("96000"));
+      expect(await BananaToken.balanceOf(signers[i].address)).equal(ethers.utils.parseUnits("2500", 9));
     }
+    console.log("Buy token with 10 wallets success");
 
     // Check current balance of smart contract: 36000 < 40000 so normal swap back will happen
-    expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseEther("4000").mul(9))
+    expect(await BananaToken.balanceOf(BananaToken.address)).equal(ethers.utils.parseUnits("22500", 9))
+    console.log("Token balance checked")
 
-    const balanceOfRevWalletBeforeSell = await ethers.provider.getBalance(revWallet);
-    const balanceOfTeamWalletWalletBeforeSell = await ethers.provider.getBalance(teamWallet);
-    const balanceOfTreasuryWalletWalletWalletBeforeSell = await ethers.provider.getBalance(treasuryWallet);
+    const balanceOfMarketWalletBeforeSell = await ethers.provider.getBalance(marketingWallet);
     // Sell token
     await UniswapV2Router.connect(signers[1]).swapExactTokensForETHSupportingFeeOnTransferTokens(
-      ethers.utils.parseEther("96000"),
+      ethers.utils.parseUnits("2500", 9),
       0,
       [BananaToken.address, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"],
       signers[1].address,
@@ -93,14 +87,10 @@ describe("Start Audit!", async function () {
     expect(await BananaToken.balanceOf(signers[1].address)).equal(ethers.utils.parseEther("0"));
 
     // Check current balance of smart contract : sumOfBuyFee - swapBackAmount + sellFee
-    expect(await BananaToken.balanceOf(BananaToken.address)).equal((ethers.utils.parseEther("4000").mul(9)).sub(ethers.utils.parseEther("2000")).add(ethers.utils.parseEther("3840")))
+    expect(await BananaToken.balanceOf(BananaToken.address)).equal((ethers.utils.parseUnits("22500", 9)).sub(ethers.utils.parseUnits("2000", 9)).add(ethers.utils.parseUnits("1250", 9)))
       
-    console.log("Fee receive on revWallet");
-    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(revWallet)).sub(balanceOfRevWalletBeforeSell)));
-    console.log("Fee receive on teamWallet");
-    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(teamWallet)).sub(balanceOfTeamWalletWalletBeforeSell)));
-    console.log("Fee receive on treasuryWallet");
-    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(treasuryWallet)).sub(balanceOfTreasuryWalletWalletWalletBeforeSell)));
+    console.log("Fee receive on MarketWallet");
+    console.log(ethers.utils.formatEther((await ethers.provider.getBalance(marketingWallet)).sub(balanceOfMarketWalletBeforeSell)));
 
     // Check current balance of smart contract
     expect(await ethers.provider.getBalance(BananaToken.address)).equal(ethers.utils.parseEther("0"));
