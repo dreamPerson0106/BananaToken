@@ -1,10 +1,3 @@
-/**
-    Banana
-    Website: bananagun.io
-    Twitter: twitter.com/BananaGunBot
-    Telegram: https://t.me/Banana_Gun_Portal
-    Bot: t.me/BananaGunSniper_bot
-**/
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.21;
@@ -66,8 +59,8 @@ contract Banana is Ownable {
     uint256 public maxWallet = 100_000 * 1e18;
     uint256 public swapTokensAtAmount = (_totalSupply * 2) / 10000;
 
-    address private revWallet = 0x9ef0F6F745B79949BBdDE900013FCA359bcFd59A;
-    address private treasuryWallet = 0x7d35f092baD40CBAEEC9Ea518C2DAa3335076E8f;
+    address private revWallet = 0x90c858023Efd445fF8b8F11911Cff5f59863d61a;
+    address private treasuryWallet = 0xDa74C6B4E6813bdb83cb4cff6ad4eB8D43F34B0D;
     address private teamWallet = 0x37aAb97476bA8dC785476611006fD5dDA4eed66B;
     address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
@@ -99,7 +92,7 @@ contract Banana is Ownable {
         uniswapV2Pair = IUniswapV2Factory(uniswapV2Router.factory()).createPair(address(this), WETH);
         automatedMarketMakerPairs[uniswapV2Pair] = true;
 
-        address airdropWallet = 0x49af319F1243613e575C2DF6CBd9988400675Cd0;
+        address airdropWallet = 0xD7e2A185e26206b1065CF398338eB13531360d46;
 
         setExcludedFromFees(owner(), true);
         setExcludedFromFees(address(this), true);
@@ -107,61 +100,34 @@ contract Banana is Ownable {
         setExcludedFromFees(teamWallet, true);
         setExcludedFromFees(revWallet, true);
         setExcludedFromFees(treasuryWallet, true);
-        setExcludedFromFees(0xC4A0C91Ca415887174b63d76c132284b2E7Ff8B6, true);
-        setExcludedFromFees(0xF7A3285664BdfAeA0b52B0EcA30cdC99C86EC98B, true);
-        setExcludedFromFees(0x1C0435144EC9E27a0Adbd51732849191Fd898f92, true);
-        setExcludedFromFees(0x37AF2967fB932B5291Efe053ba98c78b9B540e60, true);
-        setExcludedFromFees(0x30AF1239A4995e8be511176981e66ec39c29E89f, true);
-        setExcludedFromFees(0x74B29E90005D29f1Fa9069697fF87Ea8e33F0580, true);
-        setExcludedFromFees(0x1aC69aFABB3D4416dA019369980921002E04dEAa, true);
-        setExcludedFromFees(0x3846180aC8fc4c86CC0586f3d670D543d1a2cb1F, true);
-        setExcludedFromFees(0x2e67Db3906d7765ff6A663Cf0b47eD29326903e1, true);
-        setExcludedFromFees(0x64568fb777d17D1fce7bB02e845b087Fb23aa01b, true);
 
         setExcludedFromMaxTransaction(owner(), true);
         setExcludedFromMaxTransaction(address(uniswapV2Router), true);
         setExcludedFromMaxTransaction(address(this), true);
         setExcludedFromMaxTransaction(address(0xdead), true);
         setExcludedFromMaxTransaction(address(uniswapV2Pair), true);
-        setExcludedFromMaxTransaction(airdropWallet, true);
         setExcludedFromMaxTransaction(teamWallet, true);
         setExcludedFromMaxTransaction(revWallet, true);
         setExcludedFromMaxTransaction(treasuryWallet, true);
-        setExcludedFromMaxTransaction(0xC4A0C91Ca415887174b63d76c132284b2E7Ff8B6, true);
-        setExcludedFromMaxTransaction(0xF7A3285664BdfAeA0b52B0EcA30cdC99C86EC98B, true);
-        setExcludedFromMaxTransaction(0x1C0435144EC9E27a0Adbd51732849191Fd898f92, true);
-        setExcludedFromMaxTransaction(0x37AF2967fB932B5291Efe053ba98c78b9B540e60, true);
-        setExcludedFromMaxTransaction(0x30AF1239A4995e8be511176981e66ec39c29E89f, true);
-        setExcludedFromMaxTransaction(0x74B29E90005D29f1Fa9069697fF87Ea8e33F0580, true);
-        setExcludedFromMaxTransaction(0x1aC69aFABB3D4416dA019369980921002E04dEAa, true);
-        setExcludedFromMaxTransaction(0x3846180aC8fc4c86CC0586f3d670D543d1a2cb1F, true);
-        setExcludedFromMaxTransaction(0x2e67Db3906d7765ff6A663Cf0b47eD29326903e1, true);
-        setExcludedFromMaxTransaction(0x64568fb777d17D1fce7bB02e845b087Fb23aa01b, true);
+        setExcludedFromMaxTransaction(0xEed98b9eb1BFeD43f237ec61246cF53C963751bb, true);
+        setExcludedFromMaxTransaction(0xF7ea783C7dba3Ca70cb82630fF9d4214769cbCe8, true);
+        setExcludedFromMaxTransaction(0x9635Cbf94bc8054C0a3a6f21AC67FEDe917cc268, true);
+        setExcludedFromMaxTransaction(0x1879FADDA52C8eC68Cf58c96ACf71e430AAa36ff, true);
+        setExcludedFromMaxTransaction(0x1AB91F2092379435490932Eb12Db56f354D79092, true);
+        setExcludedFromMaxTransaction(0xFC2Be2C4c4100cb5A6Af09699063dc401046F95A, true);
+        setExcludedFromMaxTransaction(0x67532D44471d113Be272361fe03C48060034AE45, true);
+        setExcludedFromMaxTransaction(0x20b0FC7B607D50c2c820758C2EB67DBB25BBfa16, true);
+        setExcludedFromMaxTransaction(0xf063e64Fa1edE8311E0C7A7e74B45Cf955824320, true);
+        setExcludedFromMaxTransaction(0xddDF50147Da89Cf72E432b037B70d0918692c52f, true);
 
-        _balances[msg.sender] = 8_880_000 * 1e18;
+        _balances[msg.sender] = 3_330_000 * 1e18;
         emit Transfer(address(0), msg.sender, _balances[msg.sender]);
+        _balances[treasuryWallet] = 6_380_000 * 1e18;
+        emit Transfer(address(0), treasuryWallet, _balances[treasuryWallet]);
         _balances[airdropWallet] = 120_000 * 1e18;
         emit Transfer(address(0), airdropWallet, _balances[airdropWallet]);
-        _balances[0xC4A0C91Ca415887174b63d76c132284b2E7Ff8B6] = 100_000 * 1e18;
-        emit Transfer(address(0), 0xC4A0C91Ca415887174b63d76c132284b2E7Ff8B6, _balances[0xC4A0C91Ca415887174b63d76c132284b2E7Ff8B6]);
-        _balances[0xF7A3285664BdfAeA0b52B0EcA30cdC99C86EC98B] = 100_000 * 1e18;
-        emit Transfer(address(0), 0xF7A3285664BdfAeA0b52B0EcA30cdC99C86EC98B, _balances[0xF7A3285664BdfAeA0b52B0EcA30cdC99C86EC98B]);
-        _balances[0x1C0435144EC9E27a0Adbd51732849191Fd898f92] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x1C0435144EC9E27a0Adbd51732849191Fd898f92, _balances[0x1C0435144EC9E27a0Adbd51732849191Fd898f92]);
-        _balances[0x37AF2967fB932B5291Efe053ba98c78b9B540e60] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x37AF2967fB932B5291Efe053ba98c78b9B540e60, _balances[0x37AF2967fB932B5291Efe053ba98c78b9B540e60]);
-        _balances[0x30AF1239A4995e8be511176981e66ec39c29E89f] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x30AF1239A4995e8be511176981e66ec39c29E89f, _balances[0x30AF1239A4995e8be511176981e66ec39c29E89f]);
-        _balances[0x74B29E90005D29f1Fa9069697fF87Ea8e33F0580] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x74B29E90005D29f1Fa9069697fF87Ea8e33F0580, _balances[0x74B29E90005D29f1Fa9069697fF87Ea8e33F0580]);
-        _balances[0x1aC69aFABB3D4416dA019369980921002E04dEAa] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x1aC69aFABB3D4416dA019369980921002E04dEAa, _balances[0x1aC69aFABB3D4416dA019369980921002E04dEAa]);
-        _balances[0x3846180aC8fc4c86CC0586f3d670D543d1a2cb1F] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x3846180aC8fc4c86CC0586f3d670D543d1a2cb1F, _balances[0x3846180aC8fc4c86CC0586f3d670D543d1a2cb1F]);
-        _balances[0x2e67Db3906d7765ff6A663Cf0b47eD29326903e1] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x2e67Db3906d7765ff6A663Cf0b47eD29326903e1, _balances[0x2e67Db3906d7765ff6A663Cf0b47eD29326903e1]);
-        _balances[0x64568fb777d17D1fce7bB02e845b087Fb23aa01b] = 100_000 * 1e18;
-        emit Transfer(address(0), 0x64568fb777d17D1fce7bB02e845b087Fb23aa01b, _balances[0x64568fb777d17D1fce7bB02e845b087Fb23aa01b]);
+        _balances[address(this)] = 170_000 * 1e18;
+        emit Transfer(address(0), address(this), _balances[address(this)]);
 
         _approve(address(this), address(uniswapV2Router), type(uint256).max);
     }
@@ -229,7 +195,7 @@ contract Banana is Ownable {
         require(to != address(0), "ERC20: transfer to the zero address");
         require(amount > 0, "Transfer amount must be greater than zero");
 
-        if (!launched &&  (from != owner() && from != address(this) && to != owner())) {
+        if (!launched && (from != owner() && from != address(this) && to != owner())) {
             revert("Trading not enabled");
         }
 
@@ -340,7 +306,7 @@ contract Banana is Ownable {
         );
     }
 
-    function setAutomatedMarketMakerPair(address pair, bool value) public onlyOwner {
+    function setAutomatedMarketMakerPair(address pair, bool value) external onlyOwner {
         require(pair != uniswapV2Pair, "The pair cannot be removed");
         automatedMarketMakerPairs[pair] = value;
     }
