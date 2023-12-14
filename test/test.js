@@ -50,7 +50,7 @@ describe("Start Audit!", async function () {
       console.log("AddLiquidity Failed", err);
     }
 
-    await BananaToken.connect(deployer).openTrade();
+    await BananaToken.connect(deployer).enableTrading();
     console.log("OpenTrade success");
     for(let i = 1; i < 10 ; ++ i) {
       await UniswapV2Router.connect(signers[i]).swapETHForExactTokens(

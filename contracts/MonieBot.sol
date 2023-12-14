@@ -251,7 +251,7 @@ contract MonieBot is Ownable {
         _isExcludedMaxTransactionAmount[account] = excluded;
     }
 
-    function openTrade() external onlyOwner {
+    function enableTrading() external onlyOwner {
         require(!launched, "Already launched");
         launched = true;
     }
