@@ -122,7 +122,7 @@ contract MonieBot is Ownable {
     }
 
     function decimals() public pure returns (uint8) {
-        return 18;
+        return 9;
     }
 
     function totalSupply() public pure returns (uint256) {
